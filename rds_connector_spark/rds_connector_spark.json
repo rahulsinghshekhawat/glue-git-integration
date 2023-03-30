@@ -1,0 +1,40 @@
+{
+  "name" : "rds_connector_spark",
+  "description" : "",
+  "role" : "arn:aws:iam::024431693613:role/GlueRole-tfjan-development",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 2
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-024431693613-ap-south-1/scripts/rds_connector_spark.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--extra-py-files" : "s3://dummyweb321/aws-glue-python-modules/psycopg2.zip",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-024431693613-ap-south-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--additional-python-modules" : "psycopg2-binary==2.9.3, sqlalchemy==1.3.24",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-024431693613-ap-south-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 2880,
+  "maxCapacity" : 2.0,
+  "glueVersion" : "3.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "glue-git-integration",
+    "branch" : "main",
+    "folder" : "rds_connector_spark"
+  }
+}
