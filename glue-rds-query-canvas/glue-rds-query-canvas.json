@@ -1,0 +1,42 @@
+{
+  "name" : "glue-rds-query-canvas",
+  "description" : "",
+  "role" : "arn:aws:iam::024431693613:role/MyGlueRole",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-024431693613-ap-south-1/scripts/glue-rds-canvas.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-024431693613-ap-south-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-024431693613-ap-south-1/temporary/"
+  },
+  "connections" : {
+    "connections" : [ "poc1", "poc2" ]
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 2880,
+  "maxCapacity" : 2.0,
+  "glueVersion" : "3.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1679111853263\":{\"SparkSQL\":{\"Inputs\":[\"node-1679111764706\",\"node-1679111607731\"],\"Name\":\"SQL Query\",\"SqlAliases\":[{\"Alias\":\"poc2db\",\"From\":\"node-1679111764706\"},{\"Alias\":\"poc1db\",\"From\":\"node-1679111607731\"}],\"SqlQuery\":\"select p1.emp_id, p1.fname, p1.lname, p1.sex, p2.dept_id, p2.dept_name from poc1db p1 join poc2db p2 where p1.dept_id=p2.dept_id limit 20000;\\n\"}},\"node-1679112252043\":{\"S3DirectTarget\":{\"Compression\":\"none\",\"Format\":\"csv\",\"Inputs\":[\"node-1679111853263\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://glue-rds-bucket/rds-query-results-glue-canvas/\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false,\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}},\"node-1679111607731\":{\"DirectJDBCSource\":{\"ConnectionName\":\"poc1\",\"ConnectionType\":\"postgresql\",\"Database\":\"postgres\",\"Name\":\"poc1_postgres\",\"RedshiftTmpDir\":\"\",\"Table\":\"public.employee\"}},\"node-1679111764706\":{\"DirectJDBCSource\":{\"ConnectionName\":\"poc2\",\"ConnectionType\":\"postgresql\",\"Database\":\"postgres\",\"Name\":\"poc2_postgres\",\"RedshiftTmpDir\":\"\",\"Table\":\"public.dept\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "glue-git-integration",
+    "branch" : "main",
+    "folder" : "glue-rds-query-canvas"
+  }
+}
